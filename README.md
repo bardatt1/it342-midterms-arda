@@ -63,13 +63,9 @@ The objective of this activity was to integrate the **Google Contacts (People) A
 
 ---
 
-### 4. Testing and Deployment
+### 4. Testing
 
-- Ran the application locally using:
-
-    ```bash
-    mvn spring-boot:run
-    ```
+- Ran the application in using VScode:
 
 - Verified:
     - Successful Google authentication.
@@ -106,16 +102,4 @@ The objective of this activity was to integrate the **Google Contacts (People) A
 - ✅ Screenshots or demo video (included separately, if required).
 
 ---
-
-## Repository Link
-
-[🔗 Insert GitHub Repository URL Here]
-
----
-
-## Author
-
-[Your Name]  
-[Your Contact Information, if applicable]  
-[Course Name / Subject Name, if relevant]
 
