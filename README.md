@@ -93,12 +93,3 @@ The objective of this activity is to integrate the **Google Contacts (People) AP
 - Mapping **Google People API response data** into simpler UI-friendly formats.
 
 ---
-
-## Submission Requirements (Completed)
-
-- ✅ Source code hosted on GitHub.
-- ✅ Short report explaining the implementation steps and challenges (this README).
-- ✅ Screenshots or demo video (included separately, if required).
-
----
-
