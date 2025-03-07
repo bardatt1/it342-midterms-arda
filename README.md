@@ -65,7 +65,7 @@ The objective of this activity was to integrate the **Google Contacts (People) A
 
 ### 4. Testing
 
-- Ran the application in using VScode:
+- Ran the application using VScode:
 
 - Verified:
     - Successful Google authentication.
