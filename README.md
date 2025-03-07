@@ -2,7 +2,7 @@
 
 ## Objective
 
-The objective of this activity was to integrate the **Google Contacts (People) API** into a **Spring Boot application** with a **Thymeleaf-based user interface**. The application allows authenticated users to retrieve, view, and manage their Google Contacts directly from the web application. This activity provided hands-on experience with **OAuth 2.0 authentication**, **RESTful API consumption**, and **building CRUD functionality** in a real-world context.
+The objective of this activity is to integrate the **Google Contacts (People) API** into a **Spring Boot application** with a **Thymeleaf-based user interface**. The application allows authenticated users to retrieve, view, and manage their Google Contacts directly from the web application. This activity provided hands-on experience with **OAuth 2.0 authentication**, **RESTful API consumption**, and **building CRUD functionality** in a real-world context.
 
 ---
 
@@ -37,8 +37,7 @@ The objective of this activity was to integrate the **Google Contacts (People) A
 - Created **OAuth 2.0 Credentials** (Client ID & Client Secret).
 - Configured the **OAuth Consent Screen** with required scopes:
     - `https://www.googleapis.com/auth/contacts`
-    - `https://www.googleapis.com/auth/contacts.readonly`
-- Added `http://localhost:8080` as an **Authorized Redirect URI**.
+- Added `http://localhost:8080/contacts` as an **Authorized Redirect URI**.
 
 ---
 
