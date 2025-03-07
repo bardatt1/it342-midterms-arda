@@ -144,13 +144,33 @@
                         <label class="form-label">Name:</label>
                         <input type="text" id="contact-name" class="form-control">
                     </div>
+                    <!--
                     <div class="mb-3">
                         <label class="form-label">Phone:</label>
                         <input type="text" id="contact-phone" class="form-control">
                     </div>
+                    -->
+                    <div class="mb-3">
+                        <label class="form-label">Phone:</label>
+                        <input type="text" id="contact-phone" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div class="invalid-feedback" id="phone-error" style="display: none; color: red;">
+                            Please enter a valid phone number (digits only).
+                        </div>
+                    </div>
+                    <!--
                     <div class="mb-3">
                         <label class="form-label">Email:</label>
                         <input type="email" id="contact-email" class="form-control">
+                    </div>
+                    -->
+                    <div class="mb-3">
+                        <label class="form-label">Email:</label>
+                        <input type="email" id="contact-email" class="form-control" 
+                               pattern="[a-zA-Z0-9._%+-]+@email\.com" 
+                               title="Email must follow the format: sample@email.com">
+                        <div class="invalid-feedback" id="email-error" style="display: none; color: red;">
+                            Please enter a valid email address (sample@email.com format only).
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -263,48 +283,68 @@
 
 
     function saveContact() {
-            const resourceName = document.getElementById("contact-resourceName").value;
-            const name = document.getElementById("contact-name").value;
-            const phone = document.getElementById("contact-phone").value;
-            const email = document.getElementById("contact-email").value;
-            
-            const contactJson = {
-                names: [{ familyName: name }],
-                phoneNumbers: [{ value: phone }],
-                emailAddresses: [{ value: email }]
-            };
+        const resourceName = document.getElementById("contact-resourceName").value;
+        const name = document.getElementById("contact-name").value;
+        const phone = document.getElementById("contact-phone").value;
+        const email = document.getElementById("contact-email").value;
 
-            const url = resourceName ? "/api/contacts/update" : "/api/contacts";
-            const method = resourceName ? "POST" : "POST";
-            const body = resourceName ? new URLSearchParams({ resourceName, familyName: name, email, phoneNumber: phone }) : JSON.stringify(contactJson);
+        // Validation - Phone (only digits allowed)
+        const phonePattern = /^[0-9]{11}$/;
+        if (!phonePattern.test(phone)) {
+            alert("Phone number must be exactly 11 digits and contain only numbers.");
+            return;
+        }
 
-            fetch(url, {
-                method: method,
-                headers: { "Content-Type": resourceName ? "application/x-www-form-urlencoded" : "application/json" },
-                body: body
+        // Validation - Email (basic email pattern)
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+            alert("Please enter a valid email address (e.g., sample@email.com).");
+            return;
+        }
+
+        const contactJson = {
+            names: [{ familyName: name }],
+            phoneNumbers: [{ value: phone }],
+            emailAddresses: [{ value: email }]
+        };
+
+        const url = resourceName ? "/api/contacts/update" : "/api/contacts";
+        const method = "POST";  // This is always POST regardless of whether it's add or update
+        const body = resourceName 
+            ? new URLSearchParams({ resourceName, familyName: name, email, phoneNumber: phone }) 
+            : JSON.stringify(contactJson);
+
+        fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": resourceName ? "application/x-www-form-urlencoded" : "application/json"
+            },
+            body: body
+        })
+        .then(response => response.text())
+        .then(() => location.reload())
+        .catch(error => console.error("Error saving contact:", error));
+    }
+
+    document.getElementById("save-contact").addEventListener("click", saveContact);
+
+    function deleteContact(resourceName, name) {
+        document.getElementById("deleteMessage").textContent = `Are you sure you want to delete contact ${name}?`;
+        let deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        deleteModal.show();
+
+        document.getElementById("confirmDelete").onclick = function() {
+            fetch("/api/contacts/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({ resourceName: resourceName })
             })
             .then(response => response.text())
             .then(() => location.reload())
-            .catch(error => console.error("Error saving contact:", error));
-        }
+            .catch(error => console.error("Error deleting contact:", error));
+        };
+    }
 
-        document.getElementById("save-contact").addEventListener("click", saveContact);
-
-        function deleteContact(resourceName, name) {
-            document.getElementById("deleteMessage").textContent = `Are you sure you want to delete contact ${name}?`;
-            let deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-            deleteModal.show();
-            document.getElementById("confirmDelete").onclick = function() {
-                fetch("/api/contacts/delete", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ resourceName: resourceName })
-                })
-                .then(response => response.text())
-                .then(() => location.reload())
-                .catch(error => console.error("Error deleting contact:", error));
-            };
-        }
     </script>
 
 </body>
